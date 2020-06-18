@@ -1,5 +1,5 @@
 [build]
-  command = "make build && site/yarn site/export"
+  command = "make build && npm run site/export"
   functions = "functions"
   publish = "site/__sapper__/export"
 [build.environment]
