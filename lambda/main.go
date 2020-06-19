@@ -13,26 +13,26 @@ func getAlliance() string {
 	var token = "KJWRFSERGWerDSWFWeoriwoWODESTRgSWDF:456787654Vjhved"
 	var alliance = "tiger-team1"
 	var am4 = ""
-	response,err := http.Get("https://airline4.net/api?access_token=" + token + "&search=" + alliance)
+	response, err := http.Get("https://airline4.net/api?access_token=" + token + "&search=" + alliance)
 
 	if err != nil {
 		am4 = fmt.Sprintf("The request failed, error %s", err)
 	} else {
-		data,_ := ioutil.ReadAll(response.Body)
+		data, _ := ioutil.ReadAll(response.Body)
 		am4 = string(data)
 	}
 
 	return am4
 }
 
-func handler(ctx context.Context, request events.APIGatewayProxyRequest)(*events.APIGatewayProxyResponse, error){
+func handler(ctx context.Context, request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
 	res := getAlliance()
-	return &events.APIGatewayProxyResponse {
+	return &events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:				res,
+		Body:       res,
 	}, nil
 }
 
-func main(){
+func main() {
 	lambda.Start(handler)
 }

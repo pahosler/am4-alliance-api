@@ -1,7 +1,8 @@
 [build]
-  base = "site/"
-  command = "yarn export && ../make build"
+#  command = "yarn export"
+  command = "make build"
   functions = "functions"
-  publish = "__sapper__/export"
+  base = "lambda"
+#  publish = "__sapper__/export"
 [build.environment]
   GO_IMPORT_PATH = "github.com/pahosler/am4-alliance-api"
