@@ -9,10 +9,10 @@ import (
 	"net/http"
 )
 
-func getAlliance() string {
+func getAlliance() []byte {
 	var token = "KJWRFSERGWerDSWFWeoriwoWODESTRgSWDF:456787654Vjhved"
 	var alliance = "tiger-team1"
-	var am4 = nil
+	var am4 []byte
 	response, err := http.Get("https://airline4.net/api?access_token=" + token + "&search=" + alliance)
 
 	if err != nil {
