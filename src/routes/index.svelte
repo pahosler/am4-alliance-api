@@ -4,10 +4,10 @@
   let members;
   let Key = "KJWRFSERGWerDSWFWeoriwoWODESTRgSWDF:456787654Vjhved"; //process.env.KEY;
   let alliance_name = 'tiger-team1';
-  let URL = '/.netlify/functions/am4-alliance-api'
+  let URL = 'https://am4-api.netlify.app/.netlify/functions/am4-alliance-api'
 
   onMount(async () => {
-    const res = await fetch(URL, { method: 'GET' });
+    const res = await fetch(URL, { method: 'GET', cors: "no-cors" });
     const data = await res.json();
     members = data.members;
     window.scrollTo(0, 0);

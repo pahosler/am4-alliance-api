@@ -12,14 +12,14 @@ import (
 func getAlliance() string {
 	var token = "KJWRFSERGWerDSWFWeoriwoWODESTRgSWDF:456787654Vjhved"
 	var alliance = "tiger-team1"
-	var am4 = ""
+	var am4 = nil
 	response, err := http.Get("https://airline4.net/api?access_token=" + token + "&search=" + alliance)
 
 	if err != nil {
 		am4 = fmt.Sprintf("The request failed, error %s", err)
 	} else {
 		data, _ := ioutil.ReadAll(response.Body)
-		am4 = string(data)
+		am4 = []byte(data)
 	}
 
 	return am4
