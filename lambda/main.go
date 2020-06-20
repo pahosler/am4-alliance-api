@@ -16,7 +16,8 @@ func getAlliance() []byte {
 	response, err := http.Get("https://airline4.net/api?access_token=" + token + "&search=" + alliance)
 
 	if err != nil {
-		am4 = fmt.Sprintf("The request failed, error %s", err)
+		e = `{ "error":  err}`
+		am4 = []byte(e)
 	} else {
 		data, _ := ioutil.ReadAll(response.Body)
 		am4 = []byte(data)
