@@ -1,0 +1,390 @@
+{
+  "status": {
+    "request": "success",
+    "requests_remaining": 464
+  },
+  "alliance": [
+    {
+      "name": "Tiger-Team1",
+      "rank": 99,
+      "members": 54,
+      "maxMembers": 60,
+      "value": 12.72,
+      "ipo": 1,
+      "minSV": 0
+    }
+  ],
+  "members": [
+    {
+      "company": "KcK Airways",
+      "joined": 1586903176,
+      "flights": 34469,
+      "contributed": 1225049,
+      "shareValue": 676.66
+    },
+    {
+      "company": "Test1",
+      "joined": 1586902976,
+      "flights": 26923,
+      "contributed": 1085437,
+      "shareValue": 727.41
+    },
+    {
+      "company": "Marairways",
+      "joined": 1586905076,
+      "flights": 23921,
+      "contributed": 788114,
+      "shareValue": 595.71
+    },
+    {
+      "company": "Camby Air",
+      "joined": 1586903050,
+      "flights": 32457,
+      "contributed": 744326,
+      "shareValue": 361.78
+    },
+    {
+      "company": "Diggs AirLines",
+      "joined": 1586910730,
+      "flights": 24504,
+      "contributed": 719634,
+      "shareValue": 403
+    },
+    {
+      "company": "Ron Airways",
+      "joined": 1586903047,
+      "flights": 20597,
+      "contributed": 687468,
+      "shareValue": 400.7
+    },
+    {
+      "company": "LAPA",
+      "joined": 1586903480,
+      "flights": 26507,
+      "contributed": 629540,
+      "shareValue": 124.68
+    },
+    {
+      "company": "AirLalau",
+      "joined": 1587836154,
+      "flights": 26770,
+      "contributed": 589235,
+      "shareValue": 129.49
+    },
+    {
+      "company": "June Airways ",
+      "joined": 1590358634,
+      "flights": 31537,
+      "contributed": 568444,
+      "shareValue": 373.85
+    },
+    {
+      "company": "FlatSpin",
+      "joined": 1586903046,
+      "flights": 22161,
+      "contributed": 551100,
+      "shareValue": 311.52
+    },
+    {
+      "company": "Akashairs",
+      "joined": 1589467488,
+      "flights": 10445,
+      "contributed": 518961,
+      "shareValue": 483.27
+    },
+    {
+      "company": "bighouse",
+      "joined": 1589971658,
+      "flights": 11429,
+      "contributed": 469700,
+      "shareValue": 509.06
+    },
+    {
+      "company": "Happy airways 1",
+      "joined": 1586903480,
+      "flights": 11199,
+      "contributed": 327384,
+      "shareValue": 204.38
+    },
+    {
+      "company": "VUELAMEX",
+      "joined": 1588712231,
+      "flights": 12716,
+      "contributed": 260385,
+      "shareValue": 48.16
+    },
+    {
+      "company": "TwentyFiveAir",
+      "joined": 1589280683,
+      "flights": 8283,
+      "contributed": 258997,
+      "shareValue": 40.26
+    },
+    {
+      "company": "Aero Cargo",
+      "joined": 1588106252,
+      "flights": 12989,
+      "contributed": 249216,
+      "shareValue": 41.39
+    },
+    {
+      "company": "Yvan",
+      "joined": 1588177022,
+      "flights": 7176,
+      "contributed": 177215,
+      "shareValue": 21.07
+    },
+    {
+      "company": "bluWings",
+      "joined": 1586904386,
+      "flights": 2832,
+      "contributed": 154023,
+      "shareValue": 48.83
+    },
+    {
+      "company": "Spartan Tech Airlines ",
+      "joined": 1590531459,
+      "flights": 4010,
+      "contributed": 148655,
+      "shareValue": 75.31
+    },
+    {
+      "company": "Halc\u00f3n Airlines",
+      "joined": 1588177036,
+      "flights": 5980,
+      "contributed": 145879,
+      "shareValue": 17.33
+    },
+    {
+      "company": "Pebble Airline",
+      "joined": 1586908409,
+      "flights": 8784,
+      "contributed": 145006,
+      "shareValue": 23.17
+    },
+    {
+      "company": "Silver_Lining",
+      "joined": 1587708987,
+      "flights": 6010,
+      "contributed": 135168,
+      "shareValue": 33.29
+    },
+    {
+      "company": "ScottyAir",
+      "joined": 1592102533,
+      "flights": 2371,
+      "contributed": 132198,
+      "shareValue": 251.95
+    },
+    {
+      "company": "MYSTARU AIR",
+      "joined": 1587659558,
+      "flights": 5797,
+      "contributed": 121215,
+      "shareValue": 20.72
+    },
+    {
+      "company": "DreamyWings",
+      "joined": 1590275533,
+      "flights": 5187,
+      "contributed": 102860,
+      "shareValue": 9.32
+    },
+    {
+      "company": "Letsflayaway",
+      "joined": 1588834186,
+      "flights": 4863,
+      "contributed": 98350,
+      "shareValue": 5.71
+    },
+    {
+      "company": "turkish airlines wxb",
+      "joined": 1590493192,
+      "flights": 3041,
+      "contributed": 98091,
+      "shareValue": 27.15
+    },
+    {
+      "company": "EestiLiner",
+      "joined": 1590445813,
+      "flights": 10129,
+      "contributed": 95716,
+      "shareValue": 145.85
+    },
+    {
+      "company": "RomanianSkies",
+      "joined": 1588815572,
+      "flights": 5557,
+      "contributed": 95305,
+      "shareValue": 35.25
+    },
+    {
+      "company": "Aeroplatano",
+      "joined": 1590358632,
+      "flights": 3347,
+      "contributed": 87834,
+      "shareValue": 16.45
+    },
+    {
+      "company": "Diggs Air",
+      "joined": 1587855394,
+      "flights": 3370,
+      "contributed": 69269,
+      "shareValue": 22.05
+    },
+    {
+      "company": "Tadair1",
+      "joined": 1587216660,
+      "flights": 1841,
+      "contributed": 69201,
+      "shareValue": 58.87
+    },
+    {
+      "company": "Ycsy Airlines",
+      "joined": 1590493377,
+      "flights": 2698,
+      "contributed": 68893,
+      "shareValue": 6.67
+    },
+    {
+      "company": "Glacticos",
+      "joined": 1592597848,
+      "flights": 2909,
+      "contributed": 68346,
+      "shareValue": 12.26
+    },
+    {
+      "company": "Englands Airline",
+      "joined": 1587671078,
+      "flights": 10087,
+      "contributed": 68221,
+      "shareValue": 9.04
+    },
+    {
+      "company": "Calvanard Airlines",
+      "joined": 1587728073,
+      "flights": 2263,
+      "contributed": 59746,
+      "shareValue": 8.28
+    },
+    {
+      "company": "Blessed to be",
+      "joined": 1589239278,
+      "flights": 2064,
+      "contributed": 53394,
+      "shareValue": 4.19
+    },
+    {
+      "company": "ARC LINE ",
+      "joined": 1587770825,
+      "flights": 2840,
+      "contributed": 51096,
+      "shareValue": 5.94
+    },
+    {
+      "company": "Ethos Air",
+      "joined": 1590403676,
+      "flights": 4276,
+      "contributed": 48218,
+      "shareValue": 12.34
+    },
+    {
+      "company": "JaysAir",
+      "joined": 1589885127,
+      "flights": 2287,
+      "contributed": 40553,
+      "shareValue": 23.93
+    },
+    {
+      "company": "Flybird Airline",
+      "joined": 1587063641,
+      "flights": 741,
+      "contributed": 35719,
+      "shareValue": 31.12
+    },
+    {
+      "company": "RAUS AIRLINES",
+      "joined": 1588177035,
+      "flights": 1502,
+      "contributed": 31866,
+      "shareValue": 1.53
+    },
+    {
+      "company": "Zandy Airways",
+      "joined": 1589367271,
+      "flights": 1251,
+      "contributed": 28023,
+      "shareValue": 3.26
+    },
+    {
+      "company": "Kingfishar airline limit",
+      "joined": 1588353174,
+      "flights": 1705,
+      "contributed": 23763,
+      "shareValue": 3.32
+    },
+    {
+      "company": "Swift Air Express",
+      "joined": 1591077023,
+      "flights": 1962,
+      "contributed": 15761,
+      "shareValue": 2.32
+    },
+    {
+      "company": "Skyfire Airlines",
+      "joined": 1589439544,
+      "flights": 699,
+      "contributed": 15250,
+      "shareValue": 2.37
+    },
+    {
+      "company": "KAir GMBH",
+      "joined": 1590358633,
+      "flights": 1422,
+      "contributed": 14775,
+      "shareValue": 1.33
+    },
+    {
+      "company": "JezzAir",
+      "joined": 1592935982,
+      "flights": 266,
+      "contributed": 10607,
+      "shareValue": 13.94
+    },
+    {
+      "company": "Blikra Air",
+      "joined": 1593271108,
+      "flights": 373,
+      "contributed": 7603,
+      "shareValue": 7.92
+    },
+    {
+      "company": "Shulgin",
+      "joined": 1590493372,
+      "flights": 186,
+      "contributed": 4302,
+      "shareValue": 1.31
+    },
+    {
+      "company": "LET Airline",
+      "joined": 1593250259,
+      "flights": 341,
+      "contributed": 2599,
+      "shareValue": 2.27
+    },
+    {
+      "company": "RomanianSkiez",
+      "joined": 1593521480,
+      "flights": 7,
+      "contributed": 169,
+      "shareValue": 0.52
+    },
+    {
+      "company": "Aer Germany",
+      "joined": 1593533368,
+      "flights": 23,
+      "contributed": 135,
+      "shareValue": 0.8
+    }
+  ]
+}

@@ -1,15 +1,24 @@
 <script>
   import { onMount } from "svelte";
+  import res from '../../static/start.json';
+  import getFauna from './_getFauna.js';
 
-  let members;
-  let Key = "KJWRFSERGWerDSWFWeoriwoWODESTRgSWDF:456787654Vjhved"; //process.env.KEY;
-  let alliance_name = 'tiger-team1';
-  let URL = 'https://am4-api.netlify.app/.netlify/functions/am4-alliance-api'
-
+  let members
+  let current
   onMount(async () => {
-    const res = await fetch(URL, { method: 'GET', cors: "no-cors" });
-    const data = await res.json();
-    members = data.members;
+    const data = await JSON.parse(JSON.stringify(res));
+    current = await getFauna(() => current)
+    members = await data.members.sort((a, b) => {
+      let nameA = a.company.toUpperCase();
+      let nameB = b.company.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
     window.scrollTo(0, 0);
   })
 </script>
@@ -32,16 +41,22 @@
           <th>Company</th>
           <th>Share Value</th>
           <th>Flights</th>
-          <th>Contribution</th>
+          <th>Start Contribution</th>
+          <th>Current Contribution</th>
+          <th>Raw</th>
+          <th>Growth</th>
         </tr>
       </thead>
       <tbody>
-        {#each members as member}
+        {#each members as member,i}
           <tr>
             <th>{member.company}</th>
             <td>${member.shareValue}</td>
             <td>{member.flights}</td>
-            <td>${member.contributed}</td>
+            <td>{member.contributed.toLocaleString('en-US',{style: 'currency', currency: 'USD',})}</td>
+            <td>{current[i].contributed.toLocaleString('en-US',{style: 'currency', currency: 'USD',})}</td>
+            <td>{((current[i].contributed - member.contributed)/member.contributed)}</td>
+            <td>{((current[i].contributed - member.contributed)/current[i].contributed)*100}%</td>
           </tr>
         {/each}
       </tbody>
