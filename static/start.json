@@ -100,13 +100,6 @@
       "shareValue": 509.06
     },
     {
-      "company": "Happy airways 1",
-      "joined": 1586903480,
-      "flights": 11199,
-      "contributed": 327384,
-      "shareValue": 204.38
-    },
-    {
       "company": "VUELAMEX",
       "joined": 1588712231,
       "flights": 12716,
@@ -156,17 +149,24 @@
       "shareValue": 17.33
     },
     {
-      "company": "Pebble Airline",
-      "joined": 1586908409,
-      "flights": 8784,
-      "contributed": 145006,
-      "shareValue": 23.17
-    },
-    {
       "company": "Silver_Lining",
       "joined": 1587708987,
       "flights": 6010,
       "contributed": 135168,
+      "shareValue": 33.29
+    },
+    {
+      "company": "ChrispAirlines",
+      "joined": 1587708987,
+      "flights": 6010,
+      "contributed": 1399,
+      "shareValue": 33.29
+    },
+    {
+      "company": "Nehita",
+      "joined": 1587708987,
+      "flights": 6010,
+      "contributed": 405,
       "shareValue": 33.29
     },
     {
@@ -378,13 +378,6 @@
       "flights": 7,
       "contributed": 169,
       "shareValue": 0.52
-    },
-    {
-      "company": "Aer Germany",
-      "joined": 1593533368,
-      "flights": 23,
-      "contributed": 135,
-      "shareValue": 0.8
     }
   ]
 }
