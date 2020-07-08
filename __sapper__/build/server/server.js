@@ -12,6 +12,7 @@ var http = _interopDefault(require('http'));
 var Url = _interopDefault(require('url'));
 var https = _interopDefault(require('https'));
 var zlib = _interopDefault(require('zlib'));
+var faunadb = _interopDefault(require('faunadb'));
 
 // Ordinarily, you'd generate this data from markdown files in your
 // repo, or fetch them from a database of some kind. But in order to
@@ -258,21 +259,451 @@ function add_attribute(name, value, boolean) {
     return ` ${name}${value === true ? '' : `=${typeof value === 'string' ? JSON.stringify(escape(value)) : `"${value}"`}`}`;
 }
 
+var status = {
+	request: "success",
+	requests_remaining: 464
+};
+var alliance = [
+	{
+		name: "Tiger-Team1",
+		rank: 99,
+		members: 54,
+		maxMembers: 60,
+		value: 12.72,
+		ipo: 1,
+		minSV: 0
+	}
+];
+var members = [
+	{
+		company: "KcK Airways",
+		joined: 1586903176,
+		flights: 34469,
+		contributed: 1225049,
+		shareValue: 676.66
+	},
+	{
+		company: "Test1",
+		joined: 1586902976,
+		flights: 26923,
+		contributed: 1085437,
+		shareValue: 727.41
+	},
+	{
+		company: "Marairways",
+		joined: 1586905076,
+		flights: 23921,
+		contributed: 788114,
+		shareValue: 595.71
+	},
+	{
+		company: "Camby Air",
+		joined: 1586903050,
+		flights: 32457,
+		contributed: 744326,
+		shareValue: 361.78
+	},
+	{
+		company: "Diggs AirLines",
+		joined: 1586910730,
+		flights: 24504,
+		contributed: 719634,
+		shareValue: 403
+	},
+	{
+		company: "Ron Airways",
+		joined: 1586903047,
+		flights: 20597,
+		contributed: 687468,
+		shareValue: 400.7
+	},
+	{
+		company: "LAPA",
+		joined: 1586903480,
+		flights: 26507,
+		contributed: 629540,
+		shareValue: 124.68
+	},
+	{
+		company: "AirLalau",
+		joined: 1587836154,
+		flights: 26770,
+		contributed: 589235,
+		shareValue: 129.49
+	},
+	{
+		company: "June Airways ",
+		joined: 1590358634,
+		flights: 31537,
+		contributed: 568444,
+		shareValue: 373.85
+	},
+	{
+		company: "FlatSpin",
+		joined: 1586903046,
+		flights: 22161,
+		contributed: 551100,
+		shareValue: 311.52
+	},
+	{
+		company: "Akashairs",
+		joined: 1589467488,
+		flights: 10445,
+		contributed: 518961,
+		shareValue: 483.27
+	},
+	{
+		company: "bighouse",
+		joined: 1589971658,
+		flights: 11429,
+		contributed: 469700,
+		shareValue: 509.06
+	},
+	{
+		company: "VUELAMEX",
+		joined: 1588712231,
+		flights: 12716,
+		contributed: 260385,
+		shareValue: 48.16
+	},
+	{
+		company: "TwentyFiveAir",
+		joined: 1589280683,
+		flights: 8283,
+		contributed: 258997,
+		shareValue: 40.26
+	},
+	{
+		company: "Aero Cargo",
+		joined: 1588106252,
+		flights: 12989,
+		contributed: 249216,
+		shareValue: 41.39
+	},
+	{
+		company: "Yvan",
+		joined: 1588177022,
+		flights: 7176,
+		contributed: 177215,
+		shareValue: 21.07
+	},
+	{
+		company: "bluWings",
+		joined: 1586904386,
+		flights: 2832,
+		contributed: 154023,
+		shareValue: 48.83
+	},
+	{
+		company: "Spartan Tech Airlines ",
+		joined: 1590531459,
+		flights: 4010,
+		contributed: 148655,
+		shareValue: 75.31
+	},
+	{
+		company: "Halcón Airlines",
+		joined: 1588177036,
+		flights: 5980,
+		contributed: 145879,
+		shareValue: 17.33
+	},
+	{
+		company: "Silver_Lining",
+		joined: 1587708987,
+		flights: 6010,
+		contributed: 135168,
+		shareValue: 33.29
+	},
+	{
+		company: "ChrispAirlines",
+		joined: 1587708987,
+		flights: 6010,
+		contributed: 1399,
+		shareValue: 33.29
+	},
+	{
+		company: "ScottyAir",
+		joined: 1592102533,
+		flights: 2371,
+		contributed: 132198,
+		shareValue: 251.95
+	},
+	{
+		company: "MYSTARU AIR",
+		joined: 1587659558,
+		flights: 5797,
+		contributed: 121215,
+		shareValue: 20.72
+	},
+	{
+		company: "DreamyWings",
+		joined: 1590275533,
+		flights: 5187,
+		contributed: 102860,
+		shareValue: 9.32
+	},
+	{
+		company: "Letsflayaway",
+		joined: 1588834186,
+		flights: 4863,
+		contributed: 98350,
+		shareValue: 5.71
+	},
+	{
+		company: "turkish airlines wxb",
+		joined: 1590493192,
+		flights: 3041,
+		contributed: 98091,
+		shareValue: 27.15
+	},
+	{
+		company: "EestiLiner",
+		joined: 1590445813,
+		flights: 10129,
+		contributed: 95716,
+		shareValue: 145.85
+	},
+	{
+		company: "RomanianSkies",
+		joined: 1588815572,
+		flights: 5557,
+		contributed: 95305,
+		shareValue: 35.25
+	},
+	{
+		company: "Aeroplatano",
+		joined: 1590358632,
+		flights: 3347,
+		contributed: 87834,
+		shareValue: 16.45
+	},
+	{
+		company: "Diggs Air",
+		joined: 1587855394,
+		flights: 3370,
+		contributed: 69269,
+		shareValue: 22.05
+	},
+	{
+		company: "Tadair1",
+		joined: 1587216660,
+		flights: 1841,
+		contributed: 69201,
+		shareValue: 58.87
+	},
+	{
+		company: "Ycsy Airlines",
+		joined: 1590493377,
+		flights: 2698,
+		contributed: 68893,
+		shareValue: 6.67
+	},
+	{
+		company: "Glacticos",
+		joined: 1592597848,
+		flights: 2909,
+		contributed: 68346,
+		shareValue: 12.26
+	},
+	{
+		company: "Englands Airline",
+		joined: 1587671078,
+		flights: 10087,
+		contributed: 68221,
+		shareValue: 9.04
+	},
+	{
+		company: "Calvanard Airlines",
+		joined: 1587728073,
+		flights: 2263,
+		contributed: 59746,
+		shareValue: 8.28
+	},
+	{
+		company: "Blessed to be",
+		joined: 1589239278,
+		flights: 2064,
+		contributed: 53394,
+		shareValue: 4.19
+	},
+	{
+		company: "ARC LINE ",
+		joined: 1587770825,
+		flights: 2840,
+		contributed: 51096,
+		shareValue: 5.94
+	},
+	{
+		company: "Ethos Air",
+		joined: 1590403676,
+		flights: 4276,
+		contributed: 48218,
+		shareValue: 12.34
+	},
+	{
+		company: "JaysAir",
+		joined: 1589885127,
+		flights: 2287,
+		contributed: 40553,
+		shareValue: 23.93
+	},
+	{
+		company: "Flybird Airline",
+		joined: 1587063641,
+		flights: 741,
+		contributed: 35719,
+		shareValue: 31.12
+	},
+	{
+		company: "RAUS AIRLINES",
+		joined: 1588177035,
+		flights: 1502,
+		contributed: 31866,
+		shareValue: 1.53
+	},
+	{
+		company: "Zandy Airways",
+		joined: 1589367271,
+		flights: 1251,
+		contributed: 28023,
+		shareValue: 3.26
+	},
+	{
+		company: "Kingfishar airline limit",
+		joined: 1588353174,
+		flights: 1705,
+		contributed: 23763,
+		shareValue: 3.32
+	},
+	{
+		company: "Swift Air Express",
+		joined: 1591077023,
+		flights: 1962,
+		contributed: 15761,
+		shareValue: 2.32
+	},
+	{
+		company: "Skyfire Airlines",
+		joined: 1589439544,
+		flights: 699,
+		contributed: 15250,
+		shareValue: 2.37
+	},
+	{
+		company: "KAir GMBH",
+		joined: 1590358633,
+		flights: 1422,
+		contributed: 14775,
+		shareValue: 1.33
+	},
+	{
+		company: "JezzAir",
+		joined: 1592935982,
+		flights: 266,
+		contributed: 10607,
+		shareValue: 13.94
+	},
+	{
+		company: "Blikra Air",
+		joined: 1593271108,
+		flights: 373,
+		contributed: 7603,
+		shareValue: 7.92
+	},
+	{
+		company: "Shulgin",
+		joined: 1590493372,
+		flights: 186,
+		contributed: 4302,
+		shareValue: 1.31
+	},
+	{
+		company: "LET Airline",
+		joined: 1593250259,
+		flights: 341,
+		contributed: 2599,
+		shareValue: 2.27
+	},
+	{
+		company: "RomanianSkiez",
+		joined: 1593521480,
+		flights: 7,
+		contributed: 169,
+		shareValue: 0.52
+	}
+];
+var res = {
+	status: status,
+	alliance: alliance,
+	members: members
+};
+
 /* src/routes/index.svelte generated by Svelte v3.23.2 */
 
 const css = {
 	code: "p.svelte-8am6hs{margin:1em auto}",
-	map: "{\"version\":3,\"file\":\"index.svelte\",\"sources\":[\"index.svelte\"],\"sourcesContent\":[\"<script>\\n  import { onMount } from \\\"svelte\\\";\\n\\n  let members;\\n  let Key = \\\"KJWRFSERGWerDSWFWeoriwoWODESTRgSWDF:456787654Vjhved\\\"; //process.env.KEY;\\n  let alliance_name = 'tiger-team1';\\n  let URL = 'https://am4-api.netlify.app/.netlify/functions/am4-alliance-api'\\n\\n  onMount(async () => {\\n    const res = await fetch(URL, { method: 'GET', cors: \\\"no-cors\\\" });\\n    const data = await res.json();\\n    members = data.members;\\n    window.scrollTo(0, 0);\\n  })\\n</script>\\n<style>\\n  p {\\n    margin: 1em auto;\\n  }\\n</style>\\n\\n<svelte:head>\\n  <title>Sapper project template</title>\\n</svelte:head>\\n\\n<main>\\n  <h2 class=\\\"is-size-3\\\">Tiger Team1</h2>\\n  {#if members}\\n    <table class=\\\"table is-striped\\\">\\n      <thead>\\n        <tr>\\n          <th>Company</th>\\n          <th>Share Value</th>\\n          <th>Flights</th>\\n          <th>Contribution</th>\\n        </tr>\\n      </thead>\\n      <tbody>\\n        {#each members as member}\\n          <tr>\\n            <th>{member.company}</th>\\n            <td>${member.shareValue}</td>\\n            <td>{member.flights}</td>\\n            <td>${member.contributed}</td>\\n          </tr>\\n        {/each}\\n      </tbody>\\n    </table>\\n  {:else}\\n    <p>LOADING...</p>\\n  {/if}\\n</main>\\n\"],\"names\":[],\"mappings\":\"AAgBE,CAAC,cAAC,CAAC,AACD,MAAM,CAAE,GAAG,CAAC,IAAI,AAClB,CAAC\"}"
+	map: "{\"version\":3,\"file\":\"index.svelte\",\"sources\":[\"index.svelte\"],\"sourcesContent\":[\"<script>\\n  import { onMount } from \\\"svelte\\\";\\n  import res from \\\"../../static/start.json\\\";\\n  // import getFauna from './_getFauna.js';\\n\\n  let members;\\n  let current;\\n  onMount(async () => {\\n    const faunadb = window.faunadb;\\n    const q = faunadb.query;\\n    const client = new faunadb.Client({\\n      secret: \\\"fnADvsSZphACAJMZtbFfkj4b83lYv_oQQGQRCyce\\\",\\n      domain: \\\"db.fauna.com\\\",\\n      scheme: \\\"https\\\"\\n    });\\n\\n    try {\\n      let { data } = await client.query(\\n        q.Get(q.Ref(q.Collection(\\\"team\\\"), \\\"270057444654187008\\\"))\\n      );\\n      let { members } = data;\\n      current = await members.sort((a, b) => {\\n        let nameA = a.company.toUpperCase();\\n        let nameB = b.company.toUpperCase();\\n        if (nameA < nameB) {\\n          return -1;\\n        }\\n        if (nameA > nameB) {\\n          return 1;\\n        }\\n        return 0;\\n      });\\n      //return current;\\n      console.log(\\\"current: \\\" + current.length);\\n    } catch (err) {\\n      console.log(err);\\n    }\\n\\n    const data = await JSON.parse(JSON.stringify(res));\\n    //current = await getFauna(() => current);\\n    members = await data.members.sort((a, b) => {\\n      let nameA = a.company.toUpperCase();\\n      let nameB = b.company.toUpperCase();\\n      if (nameA < nameB) {\\n        return -1;\\n      }\\n      if (nameA > nameB) {\\n        return 1;\\n      }\\n      return 0;\\n    });\\n    console.log(members.length);\\n    window.scrollTo(0, 0);\\n  });\\n</script>\\n\\n<style>\\n  p {\\n    margin: 1em auto;\\n  }\\n</style>\\n\\n<svelte:head>\\n  <title>Sapper project template</title>\\n</svelte:head>\\n\\n<main>\\n  <h2 class=\\\"is-size-3\\\">Tiger Team1</h2>\\n  {#if members}\\n    <table class=\\\"table is-striped\\\">\\n      <thead>\\n        <tr>\\n          <th>Company</th>\\n          <th>Share Value</th>\\n          <th>Flights</th>\\n          <th>Start Contribution</th>\\n          <th>Current Contribution</th>\\n          <th>Raw</th>\\n          <th>Growth</th>\\n        </tr>\\n      </thead>\\n      <tbody>\\n        {#each members as member, i}\\n          <tr>\\n            <th>{member.company}</th>\\n            <td>${member.shareValue}</td>\\n            <td>{member.flights}</td>\\n            <td>\\n              {member.contributed.toLocaleString('en-US', {\\n                style: 'currency',\\n                currency: 'USD'\\n              })}\\n            </td>\\n            <td>\\n              {current[i].contributed.toLocaleString('en-US', {\\n                style: 'currency',\\n                currency: 'USD'\\n              })}\\n            </td>\\n            <td>\\n              {((current[i].contributed - member.contributed) / member.contributed).toFixed(2)}\\n            </td>\\n            <td>\\n              {Math.floor(((current[i].contributed - member.contributed) / current[i].contributed) * 100)}%\\n            </td>\\n          </tr>\\n        {/each}\\n      </tbody>\\n    </table>\\n  {:else}\\n    <p>LOADING...</p>\\n  {/if}\\n</main>\\n\"],\"names\":[],\"mappings\":\"AAyDE,CAAC,cAAC,CAAC,AACD,MAAM,CAAE,GAAG,CAAC,IAAI,AAClB,CAAC\"}"
 };
-let URL = "https://am4-api.netlify.app/.netlify/functions/am4-alliance-api";
 
 const Routes = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
 	let members;
+	let current;
 
 	onMount(async () => {
-		const res = await fetch(URL, { method: "GET", cors: "no-cors" });
-		const data = await res.json();
-		members = data.members;
+		const faunadb = window.faunadb;
+		const q = faunadb.query;
+
+		const client = new faunadb.Client({
+				secret: "fnADvsSZphACAJMZtbFfkj4b83lYv_oQQGQRCyce",
+				domain: "db.fauna.com",
+				scheme: "https"
+			});
+
+		try {
+			let { data } = await client.query(q.Get(q.Ref(q.Collection("team"), "270057444654187008")));
+			let { members } = data;
+
+			current = await members.sort((a, b) => {
+				let nameA = a.company.toUpperCase();
+				let nameB = b.company.toUpperCase();
+
+				if (nameA < nameB) {
+					return -1;
+				}
+
+				if (nameA > nameB) {
+					return 1;
+				}
+
+				return 0;
+			});
+
+			//return current;
+			console.log("current: " + current.length);
+		} catch(err) {
+			console.log(err);
+		}
+
+		const data = await JSON.parse(JSON.stringify(res));
+
+		//current = await getFauna(() => current);
+		members = await data.members.sort((a, b) => {
+			let nameA = a.company.toUpperCase();
+			let nameB = b.company.toUpperCase();
+
+			if (nameA < nameB) {
+				return -1;
+			}
+
+			if (nameA > nameB) {
+				return 1;
+			}
+
+			return 0;
+		});
+
+		console.log(members.length);
 		window.scrollTo(0, 0);
 	});
 
@@ -285,11 +716,18 @@ const Routes = create_ssr_component(($$result, $$props, $$bindings, $$slots) => 
 	? `<table class="${"table is-striped"}"><thead><tr><th>Company</th>
           <th>Share Value</th>
           <th>Flights</th>
-          <th>Contribution</th></tr></thead>
-      <tbody>${each(members, member => `<tr><th>${escape(member.company)}</th>
+          <th>Start Contribution</th>
+          <th>Current Contribution</th>
+          <th>Raw</th>
+          <th>Growth</th></tr></thead>
+      <tbody>${each(members, (member, i) => `<tr><th>${escape(member.company)}</th>
             <td>$${escape(member.shareValue)}</td>
             <td>${escape(member.flights)}</td>
-            <td>$${escape(member.contributed)}</td>
+            <td>${escape(member.contributed.toLocaleString("en-US", { style: "currency", currency: "USD" }))}</td>
+            <td>${escape(current[i].contributed.toLocaleString("en-US", { style: "currency", currency: "USD" }))}</td>
+            <td>${escape(((current[i].contributed - member.contributed) / member.contributed).toFixed(2))}</td>
+            <td>${escape(Math.floor((current[i].contributed - member.contributed) / current[i].contributed * 100))}%
+            </td>
           </tr>`)}</tbody></table>`
 	: `<p class="${"svelte-8am6hs"}">LOADING...</p>`}</main>`;
 });
@@ -366,8 +804,8 @@ const U5Bslugu5D = create_ssr_component(($$result, $$props, $$bindings, $$slots)
 /* src/components/Nav.svelte generated by Svelte v3.23.2 */
 
 const css$3 = {
-	code: "nav.svelte-1dbd5up{border-bottom:1px solid rgba(255,62,0,0.1);font-weight:300;padding:0 1em}ul.svelte-1dbd5up{margin:0;padding:0}ul.svelte-1dbd5up::after{content:'';display:block;clear:both}li.svelte-1dbd5up{display:block;float:left}[aria-current].svelte-1dbd5up{position:relative;display:inline-block}[aria-current].svelte-1dbd5up::after{position:absolute;content:'';width:calc(100% - 1em);height:2px;background-color:rgb(255,62,0);display:block;bottom:-1px}a.svelte-1dbd5up{text-decoration:none;padding:1em 0.5em;display:block}",
-	map: "{\"version\":3,\"file\":\"Nav.svelte\",\"sources\":[\"Nav.svelte\"],\"sourcesContent\":[\"<script>\\n\\texport let segment;\\n</script>\\n\\n<style>\\n\\tnav {\\n\\t\\tborder-bottom: 1px solid rgba(255,62,0,0.1);\\n\\t\\tfont-weight: 300;\\n\\t\\tpadding: 0 1em;\\n\\t}\\n\\n\\tul {\\n\\t\\tmargin: 0;\\n\\t\\tpadding: 0;\\n\\t}\\n\\n\\t/* clearfix */\\n\\tul::after {\\n\\t\\tcontent: '';\\n\\t\\tdisplay: block;\\n\\t\\tclear: both;\\n\\t}\\n\\n\\tli {\\n\\t\\tdisplay: block;\\n\\t\\tfloat: left;\\n\\t}\\n\\n\\t[aria-current] {\\n\\t\\tposition: relative;\\n\\t\\tdisplay: inline-block;\\n\\t}\\n\\n\\t[aria-current]::after {\\n\\t\\tposition: absolute;\\n\\t\\tcontent: '';\\n\\t\\twidth: calc(100% - 1em);\\n\\t\\theight: 2px;\\n\\t\\tbackground-color: rgb(255,62,0);\\n\\t\\tdisplay: block;\\n\\t\\tbottom: -1px;\\n\\t}\\n\\n\\ta {\\n\\t\\ttext-decoration: none;\\n\\t\\tpadding: 1em 0.5em;\\n\\t\\tdisplay: block;\\n\\t}\\n</style>\\n\\n<nav>\\n\\t<ul>\\n\\t\\t<li><a aria-current=\\\"{segment === undefined ? 'page' : undefined}\\\" href=\\\".\\\">home</a></li>\\n\\t\\t<li><a aria-current=\\\"{segment === 'about' ? 'page' : undefined}\\\" href=\\\"about\\\">about</a></li>\\n\\n\\t\\t<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches\\n\\t\\t     the blog data when we hover over the link or tap it on a touchscreen -->\\n\\t\\t<li><a rel=prefetch aria-current=\\\"{segment === 'blog' ? 'page' : undefined}\\\" href=\\\"blog\\\">blog</a></li>\\n\\t</ul>\\n</nav>\\n\"],\"names\":[],\"mappings\":\"AAKC,GAAG,eAAC,CAAC,AACJ,aAAa,CAAE,GAAG,CAAC,KAAK,CAAC,KAAK,GAAG,CAAC,EAAE,CAAC,CAAC,CAAC,GAAG,CAAC,CAC3C,WAAW,CAAE,GAAG,CAChB,OAAO,CAAE,CAAC,CAAC,GAAG,AACf,CAAC,AAED,EAAE,eAAC,CAAC,AACH,MAAM,CAAE,CAAC,CACT,OAAO,CAAE,CAAC,AACX,CAAC,AAGD,iBAAE,OAAO,AAAC,CAAC,AACV,OAAO,CAAE,EAAE,CACX,OAAO,CAAE,KAAK,CACd,KAAK,CAAE,IAAI,AACZ,CAAC,AAED,EAAE,eAAC,CAAC,AACH,OAAO,CAAE,KAAK,CACd,KAAK,CAAE,IAAI,AACZ,CAAC,AAED,CAAC,YAAY,CAAC,eAAC,CAAC,AACf,QAAQ,CAAE,QAAQ,CAClB,OAAO,CAAE,YAAY,AACtB,CAAC,AAED,CAAC,YAAY,gBAAC,OAAO,AAAC,CAAC,AACtB,QAAQ,CAAE,QAAQ,CAClB,OAAO,CAAE,EAAE,CACX,KAAK,CAAE,KAAK,IAAI,CAAC,CAAC,CAAC,GAAG,CAAC,CACvB,MAAM,CAAE,GAAG,CACX,gBAAgB,CAAE,IAAI,GAAG,CAAC,EAAE,CAAC,CAAC,CAAC,CAC/B,OAAO,CAAE,KAAK,CACd,MAAM,CAAE,IAAI,AACb,CAAC,AAED,CAAC,eAAC,CAAC,AACF,eAAe,CAAE,IAAI,CACrB,OAAO,CAAE,GAAG,CAAC,KAAK,CAClB,OAAO,CAAE,KAAK,AACf,CAAC\"}"
+	code: "nav.svelte-12i6fi0{border-bottom:1px solid rgba(255, 62, 0, 0.1);font-weight:300;padding:0 1em}ul.svelte-12i6fi0{margin:0;padding:0}ul.svelte-12i6fi0::after{content:'';display:block;clear:both}li.svelte-12i6fi0{display:block;float:left}[aria-current].svelte-12i6fi0{position:relative;display:inline-block}[aria-current].svelte-12i6fi0::after{position:absolute;content:'';width:calc(100% - 1em);height:2px;background-color:rgb(255, 62, 0);display:block;bottom:-1px}a.svelte-12i6fi0{text-decoration:none;padding:1em 0.5em;display:block}",
+	map: "{\"version\":3,\"file\":\"Nav.svelte\",\"sources\":[\"Nav.svelte\"],\"sourcesContent\":[\"<script>\\n  export let segment;\\n</script>\\n\\n<style>\\n  nav {\\n    border-bottom: 1px solid rgba(255, 62, 0, 0.1);\\n    font-weight: 300;\\n    padding: 0 1em;\\n  }\\n\\n  ul {\\n    margin: 0;\\n    padding: 0;\\n  }\\n\\n  /* clearfix */\\n  ul::after {\\n    content: '';\\n    display: block;\\n    clear: both;\\n  }\\n\\n  li {\\n    display: block;\\n    float: left;\\n  }\\n\\n  [aria-current] {\\n    position: relative;\\n    display: inline-block;\\n  }\\n\\n  [aria-current]::after {\\n    position: absolute;\\n    content: '';\\n    width: calc(100% - 1em);\\n    height: 2px;\\n    background-color: rgb(255, 62, 0);\\n    display: block;\\n    bottom: -1px;\\n  }\\n\\n  a {\\n    text-decoration: none;\\n    padding: 1em 0.5em;\\n    display: block;\\n  }\\n</style>\\n\\n<nav>\\n  <ul>\\n    <li><a aria-current=\\\"{segment === undefined ? 'page' : undefined}\\\" href=\\\".\\\">home</a></li>\\n    <!-- <li><a aria-current=\\\"{segment === 'about' ? 'page' : undefined}\\\" href=\\\"about\\\">about</a></li> -->\\n\\n    <!-- for the blog link, we're using rel=prefetch so that Sapper prefetches\\n\\t\\t     the blog data when we hover over the link or tap it on a touchscreen -->\\n    <!-- <li><a rel=prefetch aria-current=\\\"{segment === 'blog' ? 'page' : undefined}\\\" href=\\\"blog\\\">blog</a></li> -->\\n  </ul>\\n</nav>\"],\"names\":[],\"mappings\":\"AAKE,GAAG,eAAC,CAAC,AACH,aAAa,CAAE,GAAG,CAAC,KAAK,CAAC,KAAK,GAAG,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,CAC9C,WAAW,CAAE,GAAG,CAChB,OAAO,CAAE,CAAC,CAAC,GAAG,AAChB,CAAC,AAED,EAAE,eAAC,CAAC,AACF,MAAM,CAAE,CAAC,CACT,OAAO,CAAE,CAAC,AACZ,CAAC,AAGD,iBAAE,OAAO,AAAC,CAAC,AACT,OAAO,CAAE,EAAE,CACX,OAAO,CAAE,KAAK,CACd,KAAK,CAAE,IAAI,AACb,CAAC,AAED,EAAE,eAAC,CAAC,AACF,OAAO,CAAE,KAAK,CACd,KAAK,CAAE,IAAI,AACb,CAAC,AAED,CAAC,YAAY,CAAC,eAAC,CAAC,AACd,QAAQ,CAAE,QAAQ,CAClB,OAAO,CAAE,YAAY,AACvB,CAAC,AAED,CAAC,YAAY,gBAAC,OAAO,AAAC,CAAC,AACrB,QAAQ,CAAE,QAAQ,CAClB,OAAO,CAAE,EAAE,CACX,KAAK,CAAE,KAAK,IAAI,CAAC,CAAC,CAAC,GAAG,CAAC,CACvB,MAAM,CAAE,GAAG,CACX,gBAAgB,CAAE,IAAI,GAAG,CAAC,CAAC,EAAE,CAAC,CAAC,CAAC,CAAC,CACjC,OAAO,CAAE,KAAK,CACd,MAAM,CAAE,IAAI,AACd,CAAC,AAED,CAAC,eAAC,CAAC,AACD,eAAe,CAAE,IAAI,CACrB,OAAO,CAAE,GAAG,CAAC,KAAK,CAClB,OAAO,CAAE,KAAK,AAChB,CAAC\"}"
 };
 
 const Nav = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
@@ -375,11 +813,11 @@ const Nav = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
 	if ($$props.segment === void 0 && $$bindings.segment && segment !== void 0) $$bindings.segment(segment);
 	$$result.css.add(css$3);
 
-	return `<nav class="${"svelte-1dbd5up"}"><ul class="${"svelte-1dbd5up"}"><li class="${"svelte-1dbd5up"}"><a${add_attribute("aria-current", segment === undefined ? "page" : undefined, 0)} href="${"."}" class="${"svelte-1dbd5up"}">home</a></li>
-		<li class="${"svelte-1dbd5up"}"><a${add_attribute("aria-current", segment === "about" ? "page" : undefined, 0)} href="${"about"}" class="${"svelte-1dbd5up"}">about</a></li>
+	return `<nav class="${"svelte-12i6fi0"}"><ul class="${"svelte-12i6fi0"}"><li class="${"svelte-12i6fi0"}"><a${add_attribute("aria-current", segment === undefined ? "page" : undefined, 0)} href="${"."}" class="${"svelte-12i6fi0"}">home</a></li>
+    
 
-		
-		<li class="${"svelte-1dbd5up"}"><a rel="${"prefetch"}"${add_attribute("aria-current", segment === "blog" ? "page" : undefined, 0)} href="${"blog"}" class="${"svelte-1dbd5up"}">blog</a></li></ul></nav>`;
+    
+    </ul></nav>`;
 });
 
 /* src/routes/_layout.svelte generated by Svelte v3.23.2 */
@@ -2547,17 +2985,17 @@ const resolve_url = Url.resolve;
  * @param   Object   opts  Fetch options
  * @return  Promise
  */
-function fetch$1(url, opts) {
+function fetch(url, opts) {
 
 	// allow custom promise
-	if (!fetch$1.Promise) {
+	if (!fetch.Promise) {
 		throw new Error('native promise missing, set fetch.Promise to your favorite alternative');
 	}
 
-	Body.Promise = fetch$1.Promise;
+	Body.Promise = fetch.Promise;
 
 	// wrap http.request into fetch
-	return new fetch$1.Promise(function (resolve, reject) {
+	return new fetch.Promise(function (resolve, reject) {
 		// build request object
 		const request = new Request(url, opts);
 		const options = getNodeRequestOptions(request);
@@ -2621,7 +3059,7 @@ function fetch$1(url, opts) {
 			const headers = createHeadersLenient(res.headers);
 
 			// HTTP fetch step 5
-			if (fetch$1.isRedirect(res.statusCode)) {
+			if (fetch.isRedirect(res.statusCode)) {
 				// HTTP fetch step 5.2
 				const location = headers.get('Location');
 
@@ -2688,7 +3126,7 @@ function fetch$1(url, opts) {
 						}
 
 						// HTTP-redirect fetch step 15
-						resolve(fetch$1(new Request(locationURL, requestOpts)));
+						resolve(fetch(new Request(locationURL, requestOpts)));
 						finalize();
 						return;
 				}
@@ -2785,12 +3223,12 @@ function fetch$1(url, opts) {
  * @param   Number   code  Status code
  * @return  Boolean
  */
-fetch$1.isRedirect = function (code) {
+fetch.isRedirect = function (code) {
 	return code === 301 || code === 302 || code === 303 || code === 307 || code === 308;
 };
 
 // expose Promise
-fetch$1.Promise = global.Promise;
+fetch.Promise = global.Promise;
 
 function get_page_handler(
 	manifest,
@@ -2919,7 +3357,7 @@ function get_page_handler(
 					}
 				}
 
-				return fetch$1(parsed.href, opts);
+				return fetch(parsed.href, opts);
 			}
 		};
 
@@ -3288,15 +3726,1661 @@ function serve({ prefix, pathname, cache_control }
 
 function noop$1(){}
 
+// Based on https://github.com/tmpvar/jsdom/blob/aa85b2abf07766ff7bf5c1f6daafb3726f2f2db5/lib/jsdom/living/blob.js
+
+// fix for "Readable" isn't a named export issue
+const Readable$1 = Stream.Readable;
+
+const BUFFER$1 = Symbol('buffer');
+const TYPE$1 = Symbol('type');
+
+class Blob$1 {
+	constructor() {
+		this[TYPE$1] = '';
+
+		const blobParts = arguments[0];
+		const options = arguments[1];
+
+		const buffers = [];
+		let size = 0;
+
+		if (blobParts) {
+			const a = blobParts;
+			const length = Number(a.length);
+			for (let i = 0; i < length; i++) {
+				const element = a[i];
+				let buffer;
+				if (element instanceof Buffer) {
+					buffer = element;
+				} else if (ArrayBuffer.isView(element)) {
+					buffer = Buffer.from(element.buffer, element.byteOffset, element.byteLength);
+				} else if (element instanceof ArrayBuffer) {
+					buffer = Buffer.from(element);
+				} else if (element instanceof Blob$1) {
+					buffer = element[BUFFER$1];
+				} else {
+					buffer = Buffer.from(typeof element === 'string' ? element : String(element));
+				}
+				size += buffer.length;
+				buffers.push(buffer);
+			}
+		}
+
+		this[BUFFER$1] = Buffer.concat(buffers);
+
+		let type = options && options.type !== undefined && String(options.type).toLowerCase();
+		if (type && !/[^\u0020-\u007E]/.test(type)) {
+			this[TYPE$1] = type;
+		}
+	}
+	get size() {
+		return this[BUFFER$1].length;
+	}
+	get type() {
+		return this[TYPE$1];
+	}
+	text() {
+		return Promise.resolve(this[BUFFER$1].toString());
+	}
+	arrayBuffer() {
+		const buf = this[BUFFER$1];
+		const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+		return Promise.resolve(ab);
+	}
+	stream() {
+		const readable = new Readable$1();
+		readable._read = function () {};
+		readable.push(this[BUFFER$1]);
+		readable.push(null);
+		return readable;
+	}
+	toString() {
+		return '[object Blob]';
+	}
+	slice() {
+		const size = this.size;
+
+		const start = arguments[0];
+		const end = arguments[1];
+		let relativeStart, relativeEnd;
+		if (start === undefined) {
+			relativeStart = 0;
+		} else if (start < 0) {
+			relativeStart = Math.max(size + start, 0);
+		} else {
+			relativeStart = Math.min(start, size);
+		}
+		if (end === undefined) {
+			relativeEnd = size;
+		} else if (end < 0) {
+			relativeEnd = Math.max(size + end, 0);
+		} else {
+			relativeEnd = Math.min(end, size);
+		}
+		const span = Math.max(relativeEnd - relativeStart, 0);
+
+		const buffer = this[BUFFER$1];
+		const slicedBuffer = buffer.slice(relativeStart, relativeStart + span);
+		const blob = new Blob$1([], { type: arguments[2] });
+		blob[BUFFER$1] = slicedBuffer;
+		return blob;
+	}
+}
+
+Object.defineProperties(Blob$1.prototype, {
+	size: { enumerable: true },
+	type: { enumerable: true },
+	slice: { enumerable: true }
+});
+
+Object.defineProperty(Blob$1.prototype, Symbol.toStringTag, {
+	value: 'Blob',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+/**
+ * fetch-error.js
+ *
+ * FetchError interface for operational errors
+ */
+
+/**
+ * Create FetchError instance
+ *
+ * @param   String      message      Error message for human
+ * @param   String      type         Error type for machine
+ * @param   String      systemError  For Node.js system error
+ * @return  FetchError
+ */
+function FetchError$1(message, type, systemError) {
+  Error.call(this, message);
+
+  this.message = message;
+  this.type = type;
+
+  // when err.type is `system`, err.code contains system error code
+  if (systemError) {
+    this.code = this.errno = systemError.code;
+  }
+
+  // hide custom error implementation details from end-users
+  Error.captureStackTrace(this, this.constructor);
+}
+
+FetchError$1.prototype = Object.create(Error.prototype);
+FetchError$1.prototype.constructor = FetchError$1;
+FetchError$1.prototype.name = 'FetchError';
+
+let convert$1;
+try {
+	convert$1 = require('encoding').convert;
+} catch (e) {}
+
+const INTERNALS$3 = Symbol('Body internals');
+
+// fix an issue where "PassThrough" isn't a named export for node <10
+const PassThrough$2 = Stream.PassThrough;
+
+/**
+ * Body mixin
+ *
+ * Ref: https://fetch.spec.whatwg.org/#body
+ *
+ * @param   Stream  body  Readable stream
+ * @param   Object  opts  Response options
+ * @return  Void
+ */
+function Body$1(body) {
+	var _this = this;
+
+	var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+	    _ref$size = _ref.size;
+
+	let size = _ref$size === undefined ? 0 : _ref$size;
+	var _ref$timeout = _ref.timeout;
+	let timeout = _ref$timeout === undefined ? 0 : _ref$timeout;
+
+	if (body == null) {
+		// body is undefined or null
+		body = null;
+	} else if (isURLSearchParams$1(body)) {
+		// body is a URLSearchParams
+		body = Buffer.from(body.toString());
+	} else if (isBlob$1(body)) ; else if (Buffer.isBuffer(body)) ; else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
+		// body is ArrayBuffer
+		body = Buffer.from(body);
+	} else if (ArrayBuffer.isView(body)) {
+		// body is ArrayBufferView
+		body = Buffer.from(body.buffer, body.byteOffset, body.byteLength);
+	} else if (body instanceof Stream) ; else {
+		// none of the above
+		// coerce to string then buffer
+		body = Buffer.from(String(body));
+	}
+	this[INTERNALS$3] = {
+		body,
+		disturbed: false,
+		error: null
+	};
+	this.size = size;
+	this.timeout = timeout;
+
+	if (body instanceof Stream) {
+		body.on('error', function (err) {
+			const error = err.name === 'AbortError' ? err : new FetchError$1(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, 'system', err);
+			_this[INTERNALS$3].error = error;
+		});
+	}
+}
+
+Body$1.prototype = {
+	get body() {
+		return this[INTERNALS$3].body;
+	},
+
+	get bodyUsed() {
+		return this[INTERNALS$3].disturbed;
+	},
+
+	/**
+  * Decode response as ArrayBuffer
+  *
+  * @return  Promise
+  */
+	arrayBuffer() {
+		return consumeBody$1.call(this).then(function (buf) {
+			return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+		});
+	},
+
+	/**
+  * Return raw response as Blob
+  *
+  * @return Promise
+  */
+	blob() {
+		let ct = this.headers && this.headers.get('content-type') || '';
+		return consumeBody$1.call(this).then(function (buf) {
+			return Object.assign(
+			// Prevent copying
+			new Blob$1([], {
+				type: ct.toLowerCase()
+			}), {
+				[BUFFER$1]: buf
+			});
+		});
+	},
+
+	/**
+  * Decode response as json
+  *
+  * @return  Promise
+  */
+	json() {
+		var _this2 = this;
+
+		return consumeBody$1.call(this).then(function (buffer) {
+			try {
+				return JSON.parse(buffer.toString());
+			} catch (err) {
+				return Body$1.Promise.reject(new FetchError$1(`invalid json response body at ${_this2.url} reason: ${err.message}`, 'invalid-json'));
+			}
+		});
+	},
+
+	/**
+  * Decode response as text
+  *
+  * @return  Promise
+  */
+	text() {
+		return consumeBody$1.call(this).then(function (buffer) {
+			return buffer.toString();
+		});
+	},
+
+	/**
+  * Decode response as buffer (non-spec api)
+  *
+  * @return  Promise
+  */
+	buffer() {
+		return consumeBody$1.call(this);
+	},
+
+	/**
+  * Decode response as text, while automatically detecting the encoding and
+  * trying to decode to UTF-8 (non-spec api)
+  *
+  * @return  Promise
+  */
+	textConverted() {
+		var _this3 = this;
+
+		return consumeBody$1.call(this).then(function (buffer) {
+			return convertBody$1(buffer, _this3.headers);
+		});
+	}
+};
+
+// In browsers, all properties are enumerable.
+Object.defineProperties(Body$1.prototype, {
+	body: { enumerable: true },
+	bodyUsed: { enumerable: true },
+	arrayBuffer: { enumerable: true },
+	blob: { enumerable: true },
+	json: { enumerable: true },
+	text: { enumerable: true }
+});
+
+Body$1.mixIn = function (proto) {
+	for (const name of Object.getOwnPropertyNames(Body$1.prototype)) {
+		// istanbul ignore else: future proof
+		if (!(name in proto)) {
+			const desc = Object.getOwnPropertyDescriptor(Body$1.prototype, name);
+			Object.defineProperty(proto, name, desc);
+		}
+	}
+};
+
+/**
+ * Consume and convert an entire Body to a Buffer.
+ *
+ * Ref: https://fetch.spec.whatwg.org/#concept-body-consume-body
+ *
+ * @return  Promise
+ */
+function consumeBody$1() {
+	var _this4 = this;
+
+	if (this[INTERNALS$3].disturbed) {
+		return Body$1.Promise.reject(new TypeError(`body used already for: ${this.url}`));
+	}
+
+	this[INTERNALS$3].disturbed = true;
+
+	if (this[INTERNALS$3].error) {
+		return Body$1.Promise.reject(this[INTERNALS$3].error);
+	}
+
+	let body = this.body;
+
+	// body is null
+	if (body === null) {
+		return Body$1.Promise.resolve(Buffer.alloc(0));
+	}
+
+	// body is blob
+	if (isBlob$1(body)) {
+		body = body.stream();
+	}
+
+	// body is buffer
+	if (Buffer.isBuffer(body)) {
+		return Body$1.Promise.resolve(body);
+	}
+
+	// istanbul ignore if: should never happen
+	if (!(body instanceof Stream)) {
+		return Body$1.Promise.resolve(Buffer.alloc(0));
+	}
+
+	// body is stream
+	// get ready to actually consume the body
+	let accum = [];
+	let accumBytes = 0;
+	let abort = false;
+
+	return new Body$1.Promise(function (resolve, reject) {
+		let resTimeout;
+
+		// allow timeout on slow response body
+		if (_this4.timeout) {
+			resTimeout = setTimeout(function () {
+				abort = true;
+				reject(new FetchError$1(`Response timeout while trying to fetch ${_this4.url} (over ${_this4.timeout}ms)`, 'body-timeout'));
+			}, _this4.timeout);
+		}
+
+		// handle stream errors
+		body.on('error', function (err) {
+			if (err.name === 'AbortError') {
+				// if the request was aborted, reject with this Error
+				abort = true;
+				reject(err);
+			} else {
+				// other errors, such as incorrect content-encoding
+				reject(new FetchError$1(`Invalid response body while trying to fetch ${_this4.url}: ${err.message}`, 'system', err));
+			}
+		});
+
+		body.on('data', function (chunk) {
+			if (abort || chunk === null) {
+				return;
+			}
+
+			if (_this4.size && accumBytes + chunk.length > _this4.size) {
+				abort = true;
+				reject(new FetchError$1(`content size at ${_this4.url} over limit: ${_this4.size}`, 'max-size'));
+				return;
+			}
+
+			accumBytes += chunk.length;
+			accum.push(chunk);
+		});
+
+		body.on('end', function () {
+			if (abort) {
+				return;
+			}
+
+			clearTimeout(resTimeout);
+
+			try {
+				resolve(Buffer.concat(accum, accumBytes));
+			} catch (err) {
+				// handle streams that have accumulated too much data (issue #414)
+				reject(new FetchError$1(`Could not create Buffer from response body for ${_this4.url}: ${err.message}`, 'system', err));
+			}
+		});
+	});
+}
+
+/**
+ * Detect buffer encoding and convert to target encoding
+ * ref: http://www.w3.org/TR/2011/WD-html5-20110113/parsing.html#determining-the-character-encoding
+ *
+ * @param   Buffer  buffer    Incoming buffer
+ * @param   String  encoding  Target encoding
+ * @return  String
+ */
+function convertBody$1(buffer, headers) {
+	if (typeof convert$1 !== 'function') {
+		throw new Error('The package `encoding` must be installed to use the textConverted() function');
+	}
+
+	const ct = headers.get('content-type');
+	let charset = 'utf-8';
+	let res, str;
+
+	// header
+	if (ct) {
+		res = /charset=([^;]*)/i.exec(ct);
+	}
+
+	// no charset in content type, peek at response body for at most 1024 bytes
+	str = buffer.slice(0, 1024).toString();
+
+	// html5
+	if (!res && str) {
+		res = /<meta.+?charset=(['"])(.+?)\1/i.exec(str);
+	}
+
+	// html4
+	if (!res && str) {
+		res = /<meta[\s]+?http-equiv=(['"])content-type\1[\s]+?content=(['"])(.+?)\2/i.exec(str);
+
+		if (res) {
+			res = /charset=(.*)/i.exec(res.pop());
+		}
+	}
+
+	// xml
+	if (!res && str) {
+		res = /<\?xml.+?encoding=(['"])(.+?)\1/i.exec(str);
+	}
+
+	// found charset
+	if (res) {
+		charset = res.pop();
+
+		// prevent decode issues when sites use incorrect encoding
+		// ref: https://hsivonen.fi/encoding-menu/
+		if (charset === 'gb2312' || charset === 'gbk') {
+			charset = 'gb18030';
+		}
+	}
+
+	// turn raw buffers into a single utf-8 buffer
+	return convert$1(buffer, 'UTF-8', charset).toString();
+}
+
+/**
+ * Detect a URLSearchParams object
+ * ref: https://github.com/bitinn/node-fetch/issues/296#issuecomment-307598143
+ *
+ * @param   Object  obj     Object to detect by type or brand
+ * @return  String
+ */
+function isURLSearchParams$1(obj) {
+	// Duck-typing as a necessary condition.
+	if (typeof obj !== 'object' || typeof obj.append !== 'function' || typeof obj.delete !== 'function' || typeof obj.get !== 'function' || typeof obj.getAll !== 'function' || typeof obj.has !== 'function' || typeof obj.set !== 'function') {
+		return false;
+	}
+
+	// Brand-checking and more duck-typing as optional condition.
+	return obj.constructor.name === 'URLSearchParams' || Object.prototype.toString.call(obj) === '[object URLSearchParams]' || typeof obj.sort === 'function';
+}
+
+/**
+ * Check if `obj` is a W3C `Blob` object (which `File` inherits from)
+ * @param  {*} obj
+ * @return {boolean}
+ */
+function isBlob$1(obj) {
+	return typeof obj === 'object' && typeof obj.arrayBuffer === 'function' && typeof obj.type === 'string' && typeof obj.stream === 'function' && typeof obj.constructor === 'function' && typeof obj.constructor.name === 'string' && /^(Blob|File)$/.test(obj.constructor.name) && /^(Blob|File)$/.test(obj[Symbol.toStringTag]);
+}
+
+/**
+ * Clone body given Res/Req instance
+ *
+ * @param   Mixed  instance  Response or Request instance
+ * @return  Mixed
+ */
+function clone$1(instance) {
+	let p1, p2;
+	let body = instance.body;
+
+	// don't allow cloning a used body
+	if (instance.bodyUsed) {
+		throw new Error('cannot clone body after it is used');
+	}
+
+	// check that body is a stream and not form-data object
+	// note: we can't clone the form-data object without having it as a dependency
+	if (body instanceof Stream && typeof body.getBoundary !== 'function') {
+		// tee instance body
+		p1 = new PassThrough$2();
+		p2 = new PassThrough$2();
+		body.pipe(p1);
+		body.pipe(p2);
+		// set instance body to teed body and return the other teed body
+		instance[INTERNALS$3].body = p1;
+		body = p2;
+	}
+
+	return body;
+}
+
+/**
+ * Performs the operation "extract a `Content-Type` value from |object|" as
+ * specified in the specification:
+ * https://fetch.spec.whatwg.org/#concept-bodyinit-extract
+ *
+ * This function assumes that instance.body is present.
+ *
+ * @param   Mixed  instance  Any options.body input
+ */
+function extractContentType$1(body) {
+	if (body === null) {
+		// body is null
+		return null;
+	} else if (typeof body === 'string') {
+		// body is string
+		return 'text/plain;charset=UTF-8';
+	} else if (isURLSearchParams$1(body)) {
+		// body is a URLSearchParams
+		return 'application/x-www-form-urlencoded;charset=UTF-8';
+	} else if (isBlob$1(body)) {
+		// body is blob
+		return body.type || null;
+	} else if (Buffer.isBuffer(body)) {
+		// body is buffer
+		return null;
+	} else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
+		// body is ArrayBuffer
+		return null;
+	} else if (ArrayBuffer.isView(body)) {
+		// body is ArrayBufferView
+		return null;
+	} else if (typeof body.getBoundary === 'function') {
+		// detect form data input from form-data module
+		return `multipart/form-data;boundary=${body.getBoundary()}`;
+	} else if (body instanceof Stream) {
+		// body is stream
+		// can't really do much about this
+		return null;
+	} else {
+		// Body constructor defaults other things to string
+		return 'text/plain;charset=UTF-8';
+	}
+}
+
+/**
+ * The Fetch Standard treats this as if "total bytes" is a property on the body.
+ * For us, we have to explicitly get it with a function.
+ *
+ * ref: https://fetch.spec.whatwg.org/#concept-body-total-bytes
+ *
+ * @param   Body    instance   Instance of Body
+ * @return  Number?            Number of bytes, or null if not possible
+ */
+function getTotalBytes$1(instance) {
+	const body = instance.body;
+
+
+	if (body === null) {
+		// body is null
+		return 0;
+	} else if (isBlob$1(body)) {
+		return body.size;
+	} else if (Buffer.isBuffer(body)) {
+		// body is buffer
+		return body.length;
+	} else if (body && typeof body.getLengthSync === 'function') {
+		// detect form data input from form-data module
+		if (body._lengthRetrievers && body._lengthRetrievers.length == 0 || // 1.x
+		body.hasKnownLength && body.hasKnownLength()) {
+			// 2.x
+			return body.getLengthSync();
+		}
+		return null;
+	} else {
+		// body is stream
+		return null;
+	}
+}
+
+/**
+ * Write a Body to a Node.js WritableStream (e.g. http.Request) object.
+ *
+ * @param   Body    instance   Instance of Body
+ * @return  Void
+ */
+function writeToStream$1(dest, instance) {
+	const body = instance.body;
+
+
+	if (body === null) {
+		// body is null
+		dest.end();
+	} else if (isBlob$1(body)) {
+		body.stream().pipe(dest);
+	} else if (Buffer.isBuffer(body)) {
+		// body is buffer
+		dest.write(body);
+		dest.end();
+	} else {
+		// body is stream
+		body.pipe(dest);
+	}
+}
+
+// expose Promise
+Body$1.Promise = global.Promise;
+
+/**
+ * headers.js
+ *
+ * Headers class offers convenient helpers
+ */
+
+const invalidTokenRegex$1 = /[^\^_`a-zA-Z\-0-9!#$%&'*+.|~]/;
+const invalidHeaderCharRegex$1 = /[^\t\x20-\x7e\x80-\xff]/;
+
+function validateName$1(name) {
+	name = `${name}`;
+	if (invalidTokenRegex$1.test(name) || name === '') {
+		throw new TypeError(`${name} is not a legal HTTP header name`);
+	}
+}
+
+function validateValue$1(value) {
+	value = `${value}`;
+	if (invalidHeaderCharRegex$1.test(value)) {
+		throw new TypeError(`${value} is not a legal HTTP header value`);
+	}
+}
+
+/**
+ * Find the key in the map object given a header name.
+ *
+ * Returns undefined if not found.
+ *
+ * @param   String  name  Header name
+ * @return  String|Undefined
+ */
+function find$1(map, name) {
+	name = name.toLowerCase();
+	for (const key in map) {
+		if (key.toLowerCase() === name) {
+			return key;
+		}
+	}
+	return undefined;
+}
+
+const MAP$1 = Symbol('map');
+class Headers$1 {
+	/**
+  * Headers class
+  *
+  * @param   Object  headers  Response headers
+  * @return  Void
+  */
+	constructor() {
+		let init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+		this[MAP$1] = Object.create(null);
+
+		if (init instanceof Headers$1) {
+			const rawHeaders = init.raw();
+			const headerNames = Object.keys(rawHeaders);
+
+			for (const headerName of headerNames) {
+				for (const value of rawHeaders[headerName]) {
+					this.append(headerName, value);
+				}
+			}
+
+			return;
+		}
+
+		// We don't worry about converting prop to ByteString here as append()
+		// will handle it.
+		if (init == null) ; else if (typeof init === 'object') {
+			const method = init[Symbol.iterator];
+			if (method != null) {
+				if (typeof method !== 'function') {
+					throw new TypeError('Header pairs must be iterable');
+				}
+
+				// sequence<sequence<ByteString>>
+				// Note: per spec we have to first exhaust the lists then process them
+				const pairs = [];
+				for (const pair of init) {
+					if (typeof pair !== 'object' || typeof pair[Symbol.iterator] !== 'function') {
+						throw new TypeError('Each header pair must be iterable');
+					}
+					pairs.push(Array.from(pair));
+				}
+
+				for (const pair of pairs) {
+					if (pair.length !== 2) {
+						throw new TypeError('Each header pair must be a name/value tuple');
+					}
+					this.append(pair[0], pair[1]);
+				}
+			} else {
+				// record<ByteString, ByteString>
+				for (const key of Object.keys(init)) {
+					const value = init[key];
+					this.append(key, value);
+				}
+			}
+		} else {
+			throw new TypeError('Provided initializer must be an object');
+		}
+	}
+
+	/**
+  * Return combined header value given name
+  *
+  * @param   String  name  Header name
+  * @return  Mixed
+  */
+	get(name) {
+		name = `${name}`;
+		validateName$1(name);
+		const key = find$1(this[MAP$1], name);
+		if (key === undefined) {
+			return null;
+		}
+
+		return this[MAP$1][key].join(', ');
+	}
+
+	/**
+  * Iterate over all headers
+  *
+  * @param   Function  callback  Executed for each item with parameters (value, name, thisArg)
+  * @param   Boolean   thisArg   `this` context for callback function
+  * @return  Void
+  */
+	forEach(callback) {
+		let thisArg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+
+		let pairs = getHeaders$1(this);
+		let i = 0;
+		while (i < pairs.length) {
+			var _pairs$i = pairs[i];
+			const name = _pairs$i[0],
+			      value = _pairs$i[1];
+
+			callback.call(thisArg, value, name, this);
+			pairs = getHeaders$1(this);
+			i++;
+		}
+	}
+
+	/**
+  * Overwrite header values given name
+  *
+  * @param   String  name   Header name
+  * @param   String  value  Header value
+  * @return  Void
+  */
+	set(name, value) {
+		name = `${name}`;
+		value = `${value}`;
+		validateName$1(name);
+		validateValue$1(value);
+		const key = find$1(this[MAP$1], name);
+		this[MAP$1][key !== undefined ? key : name] = [value];
+	}
+
+	/**
+  * Append a value onto existing header
+  *
+  * @param   String  name   Header name
+  * @param   String  value  Header value
+  * @return  Void
+  */
+	append(name, value) {
+		name = `${name}`;
+		value = `${value}`;
+		validateName$1(name);
+		validateValue$1(value);
+		const key = find$1(this[MAP$1], name);
+		if (key !== undefined) {
+			this[MAP$1][key].push(value);
+		} else {
+			this[MAP$1][name] = [value];
+		}
+	}
+
+	/**
+  * Check for header name existence
+  *
+  * @param   String   name  Header name
+  * @return  Boolean
+  */
+	has(name) {
+		name = `${name}`;
+		validateName$1(name);
+		return find$1(this[MAP$1], name) !== undefined;
+	}
+
+	/**
+  * Delete all header values given name
+  *
+  * @param   String  name  Header name
+  * @return  Void
+  */
+	delete(name) {
+		name = `${name}`;
+		validateName$1(name);
+		const key = find$1(this[MAP$1], name);
+		if (key !== undefined) {
+			delete this[MAP$1][key];
+		}
+	}
+
+	/**
+  * Return raw headers (non-spec api)
+  *
+  * @return  Object
+  */
+	raw() {
+		return this[MAP$1];
+	}
+
+	/**
+  * Get an iterator on keys.
+  *
+  * @return  Iterator
+  */
+	keys() {
+		return createHeadersIterator$1(this, 'key');
+	}
+
+	/**
+  * Get an iterator on values.
+  *
+  * @return  Iterator
+  */
+	values() {
+		return createHeadersIterator$1(this, 'value');
+	}
+
+	/**
+  * Get an iterator on entries.
+  *
+  * This is the default iterator of the Headers object.
+  *
+  * @return  Iterator
+  */
+	[Symbol.iterator]() {
+		return createHeadersIterator$1(this, 'key+value');
+	}
+}
+Headers$1.prototype.entries = Headers$1.prototype[Symbol.iterator];
+
+Object.defineProperty(Headers$1.prototype, Symbol.toStringTag, {
+	value: 'Headers',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+Object.defineProperties(Headers$1.prototype, {
+	get: { enumerable: true },
+	forEach: { enumerable: true },
+	set: { enumerable: true },
+	append: { enumerable: true },
+	has: { enumerable: true },
+	delete: { enumerable: true },
+	keys: { enumerable: true },
+	values: { enumerable: true },
+	entries: { enumerable: true }
+});
+
+function getHeaders$1(headers) {
+	let kind = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'key+value';
+
+	const keys = Object.keys(headers[MAP$1]).sort();
+	return keys.map(kind === 'key' ? function (k) {
+		return k.toLowerCase();
+	} : kind === 'value' ? function (k) {
+		return headers[MAP$1][k].join(', ');
+	} : function (k) {
+		return [k.toLowerCase(), headers[MAP$1][k].join(', ')];
+	});
+}
+
+const INTERNAL$1 = Symbol('internal');
+
+function createHeadersIterator$1(target, kind) {
+	const iterator = Object.create(HeadersIteratorPrototype$1);
+	iterator[INTERNAL$1] = {
+		target,
+		kind,
+		index: 0
+	};
+	return iterator;
+}
+
+const HeadersIteratorPrototype$1 = Object.setPrototypeOf({
+	next() {
+		// istanbul ignore if
+		if (!this || Object.getPrototypeOf(this) !== HeadersIteratorPrototype$1) {
+			throw new TypeError('Value of `this` is not a HeadersIterator');
+		}
+
+		var _INTERNAL = this[INTERNAL$1];
+		const target = _INTERNAL.target,
+		      kind = _INTERNAL.kind,
+		      index = _INTERNAL.index;
+
+		const values = getHeaders$1(target, kind);
+		const len = values.length;
+		if (index >= len) {
+			return {
+				value: undefined,
+				done: true
+			};
+		}
+
+		this[INTERNAL$1].index = index + 1;
+
+		return {
+			value: values[index],
+			done: false
+		};
+	}
+}, Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]())));
+
+Object.defineProperty(HeadersIteratorPrototype$1, Symbol.toStringTag, {
+	value: 'HeadersIterator',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+/**
+ * Export the Headers object in a form that Node.js can consume.
+ *
+ * @param   Headers  headers
+ * @return  Object
+ */
+function exportNodeCompatibleHeaders$1(headers) {
+	const obj = Object.assign({ __proto__: null }, headers[MAP$1]);
+
+	// http.request() only supports string as Host header. This hack makes
+	// specifying custom Host header possible.
+	const hostHeaderKey = find$1(headers[MAP$1], 'Host');
+	if (hostHeaderKey !== undefined) {
+		obj[hostHeaderKey] = obj[hostHeaderKey][0];
+	}
+
+	return obj;
+}
+
+/**
+ * Create a Headers object from an object of headers, ignoring those that do
+ * not conform to HTTP grammar productions.
+ *
+ * @param   Object  obj  Object of headers
+ * @return  Headers
+ */
+function createHeadersLenient$1(obj) {
+	const headers = new Headers$1();
+	for (const name of Object.keys(obj)) {
+		if (invalidTokenRegex$1.test(name)) {
+			continue;
+		}
+		if (Array.isArray(obj[name])) {
+			for (const val of obj[name]) {
+				if (invalidHeaderCharRegex$1.test(val)) {
+					continue;
+				}
+				if (headers[MAP$1][name] === undefined) {
+					headers[MAP$1][name] = [val];
+				} else {
+					headers[MAP$1][name].push(val);
+				}
+			}
+		} else if (!invalidHeaderCharRegex$1.test(obj[name])) {
+			headers[MAP$1][name] = [obj[name]];
+		}
+	}
+	return headers;
+}
+
+const INTERNALS$1$1 = Symbol('Response internals');
+
+// fix an issue where "STATUS_CODES" aren't a named export for node <10
+const STATUS_CODES$1 = http.STATUS_CODES;
+
+/**
+ * Response class
+ *
+ * @param   Stream  body  Readable stream
+ * @param   Object  opts  Response options
+ * @return  Void
+ */
+class Response$1 {
+	constructor() {
+		let body = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+		let opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+		Body$1.call(this, body, opts);
+
+		const status = opts.status || 200;
+		const headers = new Headers$1(opts.headers);
+
+		if (body != null && !headers.has('Content-Type')) {
+			const contentType = extractContentType$1(body);
+			if (contentType) {
+				headers.append('Content-Type', contentType);
+			}
+		}
+
+		this[INTERNALS$1$1] = {
+			url: opts.url,
+			status,
+			statusText: opts.statusText || STATUS_CODES$1[status],
+			headers,
+			counter: opts.counter
+		};
+	}
+
+	get url() {
+		return this[INTERNALS$1$1].url || '';
+	}
+
+	get status() {
+		return this[INTERNALS$1$1].status;
+	}
+
+	/**
+  * Convenience property representing if the request ended normally
+  */
+	get ok() {
+		return this[INTERNALS$1$1].status >= 200 && this[INTERNALS$1$1].status < 300;
+	}
+
+	get redirected() {
+		return this[INTERNALS$1$1].counter > 0;
+	}
+
+	get statusText() {
+		return this[INTERNALS$1$1].statusText;
+	}
+
+	get headers() {
+		return this[INTERNALS$1$1].headers;
+	}
+
+	/**
+  * Clone this response
+  *
+  * @return  Response
+  */
+	clone() {
+		return new Response$1(clone$1(this), {
+			url: this.url,
+			status: this.status,
+			statusText: this.statusText,
+			headers: this.headers,
+			ok: this.ok,
+			redirected: this.redirected
+		});
+	}
+}
+
+Body$1.mixIn(Response$1.prototype);
+
+Object.defineProperties(Response$1.prototype, {
+	url: { enumerable: true },
+	status: { enumerable: true },
+	ok: { enumerable: true },
+	redirected: { enumerable: true },
+	statusText: { enumerable: true },
+	headers: { enumerable: true },
+	clone: { enumerable: true }
+});
+
+Object.defineProperty(Response$1.prototype, Symbol.toStringTag, {
+	value: 'Response',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+const INTERNALS$2$1 = Symbol('Request internals');
+
+// fix an issue where "format", "parse" aren't a named export for node <10
+const parse_url$1 = Url.parse;
+const format_url$1 = Url.format;
+
+const streamDestructionSupported$1 = 'destroy' in Stream.Readable.prototype;
+
+/**
+ * Check if a value is an instance of Request.
+ *
+ * @param   Mixed   input
+ * @return  Boolean
+ */
+function isRequest$1(input) {
+	return typeof input === 'object' && typeof input[INTERNALS$2$1] === 'object';
+}
+
+function isAbortSignal$1(signal) {
+	const proto = signal && typeof signal === 'object' && Object.getPrototypeOf(signal);
+	return !!(proto && proto.constructor.name === 'AbortSignal');
+}
+
+/**
+ * Request class
+ *
+ * @param   Mixed   input  Url or Request instance
+ * @param   Object  init   Custom options
+ * @return  Void
+ */
+class Request$1 {
+	constructor(input) {
+		let init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+		let parsedURL;
+
+		// normalize input
+		if (!isRequest$1(input)) {
+			if (input && input.href) {
+				// in order to support Node.js' Url objects; though WHATWG's URL objects
+				// will fall into this branch also (since their `toString()` will return
+				// `href` property anyway)
+				parsedURL = parse_url$1(input.href);
+			} else {
+				// coerce input to a string before attempting to parse
+				parsedURL = parse_url$1(`${input}`);
+			}
+			input = {};
+		} else {
+			parsedURL = parse_url$1(input.url);
+		}
+
+		let method = init.method || input.method || 'GET';
+		method = method.toUpperCase();
+
+		if ((init.body != null || isRequest$1(input) && input.body !== null) && (method === 'GET' || method === 'HEAD')) {
+			throw new TypeError('Request with GET/HEAD method cannot have body');
+		}
+
+		let inputBody = init.body != null ? init.body : isRequest$1(input) && input.body !== null ? clone$1(input) : null;
+
+		Body$1.call(this, inputBody, {
+			timeout: init.timeout || input.timeout || 0,
+			size: init.size || input.size || 0
+		});
+
+		const headers = new Headers$1(init.headers || input.headers || {});
+
+		if (inputBody != null && !headers.has('Content-Type')) {
+			const contentType = extractContentType$1(inputBody);
+			if (contentType) {
+				headers.append('Content-Type', contentType);
+			}
+		}
+
+		let signal = isRequest$1(input) ? input.signal : null;
+		if ('signal' in init) signal = init.signal;
+
+		if (signal != null && !isAbortSignal$1(signal)) {
+			throw new TypeError('Expected signal to be an instanceof AbortSignal');
+		}
+
+		this[INTERNALS$2$1] = {
+			method,
+			redirect: init.redirect || input.redirect || 'follow',
+			headers,
+			parsedURL,
+			signal
+		};
+
+		// node-fetch-only options
+		this.follow = init.follow !== undefined ? init.follow : input.follow !== undefined ? input.follow : 20;
+		this.compress = init.compress !== undefined ? init.compress : input.compress !== undefined ? input.compress : true;
+		this.counter = init.counter || input.counter || 0;
+		this.agent = init.agent || input.agent;
+	}
+
+	get method() {
+		return this[INTERNALS$2$1].method;
+	}
+
+	get url() {
+		return format_url$1(this[INTERNALS$2$1].parsedURL);
+	}
+
+	get headers() {
+		return this[INTERNALS$2$1].headers;
+	}
+
+	get redirect() {
+		return this[INTERNALS$2$1].redirect;
+	}
+
+	get signal() {
+		return this[INTERNALS$2$1].signal;
+	}
+
+	/**
+  * Clone this request
+  *
+  * @return  Request
+  */
+	clone() {
+		return new Request$1(this);
+	}
+}
+
+Body$1.mixIn(Request$1.prototype);
+
+Object.defineProperty(Request$1.prototype, Symbol.toStringTag, {
+	value: 'Request',
+	writable: false,
+	enumerable: false,
+	configurable: true
+});
+
+Object.defineProperties(Request$1.prototype, {
+	method: { enumerable: true },
+	url: { enumerable: true },
+	headers: { enumerable: true },
+	redirect: { enumerable: true },
+	clone: { enumerable: true },
+	signal: { enumerable: true }
+});
+
+/**
+ * Convert a Request to Node.js http request options.
+ *
+ * @param   Request  A Request instance
+ * @return  Object   The options object to be passed to http.request
+ */
+function getNodeRequestOptions$1(request) {
+	const parsedURL = request[INTERNALS$2$1].parsedURL;
+	const headers = new Headers$1(request[INTERNALS$2$1].headers);
+
+	// fetch step 1.3
+	if (!headers.has('Accept')) {
+		headers.set('Accept', '*/*');
+	}
+
+	// Basic fetch
+	if (!parsedURL.protocol || !parsedURL.hostname) {
+		throw new TypeError('Only absolute URLs are supported');
+	}
+
+	if (!/^https?:$/.test(parsedURL.protocol)) {
+		throw new TypeError('Only HTTP(S) protocols are supported');
+	}
+
+	if (request.signal && request.body instanceof Stream.Readable && !streamDestructionSupported$1) {
+		throw new Error('Cancellation of streamed requests with AbortSignal is not supported in node < 8');
+	}
+
+	// HTTP-network-or-cache fetch steps 2.4-2.7
+	let contentLengthValue = null;
+	if (request.body == null && /^(POST|PUT)$/i.test(request.method)) {
+		contentLengthValue = '0';
+	}
+	if (request.body != null) {
+		const totalBytes = getTotalBytes$1(request);
+		if (typeof totalBytes === 'number') {
+			contentLengthValue = String(totalBytes);
+		}
+	}
+	if (contentLengthValue) {
+		headers.set('Content-Length', contentLengthValue);
+	}
+
+	// HTTP-network-or-cache fetch step 2.11
+	if (!headers.has('User-Agent')) {
+		headers.set('User-Agent', 'node-fetch/1.0 (+https://github.com/bitinn/node-fetch)');
+	}
+
+	// HTTP-network-or-cache fetch step 2.15
+	if (request.compress && !headers.has('Accept-Encoding')) {
+		headers.set('Accept-Encoding', 'gzip,deflate');
+	}
+
+	let agent = request.agent;
+	if (typeof agent === 'function') {
+		agent = agent(parsedURL);
+	}
+
+	if (!headers.has('Connection') && !agent) {
+		headers.set('Connection', 'close');
+	}
+
+	// HTTP-network fetch step 4.2
+	// chunked encoding is handled by Node.js
+
+	return Object.assign({}, parsedURL, {
+		method: request.method,
+		headers: exportNodeCompatibleHeaders$1(headers),
+		agent
+	});
+}
+
+/**
+ * abort-error.js
+ *
+ * AbortError interface for cancelled requests
+ */
+
+/**
+ * Create AbortError instance
+ *
+ * @param   String      message      Error message for human
+ * @return  AbortError
+ */
+function AbortError$1(message) {
+  Error.call(this, message);
+
+  this.type = 'aborted';
+  this.message = message;
+
+  // hide custom error implementation details from end-users
+  Error.captureStackTrace(this, this.constructor);
+}
+
+AbortError$1.prototype = Object.create(Error.prototype);
+AbortError$1.prototype.constructor = AbortError$1;
+AbortError$1.prototype.name = 'AbortError';
+
+// fix an issue where "PassThrough", "resolve" aren't a named export for node <10
+const PassThrough$1$1 = Stream.PassThrough;
+const resolve_url$1 = Url.resolve;
+
+/**
+ * Fetch function
+ *
+ * @param   Mixed    url   Absolute url or Request instance
+ * @param   Object   opts  Fetch options
+ * @return  Promise
+ */
+function fetch$1(url, opts) {
+
+	// allow custom promise
+	if (!fetch$1.Promise) {
+		throw new Error('native promise missing, set fetch.Promise to your favorite alternative');
+	}
+
+	Body$1.Promise = fetch$1.Promise;
+
+	// wrap http.request into fetch
+	return new fetch$1.Promise(function (resolve, reject) {
+		// build request object
+		const request = new Request$1(url, opts);
+		const options = getNodeRequestOptions$1(request);
+
+		const send = (options.protocol === 'https:' ? https : http).request;
+		const signal = request.signal;
+
+		let response = null;
+
+		const abort = function abort() {
+			let error = new AbortError$1('The user aborted a request.');
+			reject(error);
+			if (request.body && request.body instanceof Stream.Readable) {
+				request.body.destroy(error);
+			}
+			if (!response || !response.body) return;
+			response.body.emit('error', error);
+		};
+
+		if (signal && signal.aborted) {
+			abort();
+			return;
+		}
+
+		const abortAndFinalize = function abortAndFinalize() {
+			abort();
+			finalize();
+		};
+
+		// send request
+		const req = send(options);
+		let reqTimeout;
+
+		if (signal) {
+			signal.addEventListener('abort', abortAndFinalize);
+		}
+
+		function finalize() {
+			req.abort();
+			if (signal) signal.removeEventListener('abort', abortAndFinalize);
+			clearTimeout(reqTimeout);
+		}
+
+		if (request.timeout) {
+			req.once('socket', function (socket) {
+				reqTimeout = setTimeout(function () {
+					reject(new FetchError$1(`network timeout at: ${request.url}`, 'request-timeout'));
+					finalize();
+				}, request.timeout);
+			});
+		}
+
+		req.on('error', function (err) {
+			reject(new FetchError$1(`request to ${request.url} failed, reason: ${err.message}`, 'system', err));
+			finalize();
+		});
+
+		req.on('response', function (res) {
+			clearTimeout(reqTimeout);
+
+			const headers = createHeadersLenient$1(res.headers);
+
+			// HTTP fetch step 5
+			if (fetch$1.isRedirect(res.statusCode)) {
+				// HTTP fetch step 5.2
+				const location = headers.get('Location');
+
+				// HTTP fetch step 5.3
+				const locationURL = location === null ? null : resolve_url$1(request.url, location);
+
+				// HTTP fetch step 5.5
+				switch (request.redirect) {
+					case 'error':
+						reject(new FetchError$1(`redirect mode is set to error: ${request.url}`, 'no-redirect'));
+						finalize();
+						return;
+					case 'manual':
+						// node-fetch-specific step: make manual redirect a bit easier to use by setting the Location header value to the resolved URL.
+						if (locationURL !== null) {
+							// handle corrupted header
+							try {
+								headers.set('Location', locationURL);
+							} catch (err) {
+								// istanbul ignore next: nodejs server prevent invalid response headers, we can't test this through normal request
+								reject(err);
+							}
+						}
+						break;
+					case 'follow':
+						// HTTP-redirect fetch step 2
+						if (locationURL === null) {
+							break;
+						}
+
+						// HTTP-redirect fetch step 5
+						if (request.counter >= request.follow) {
+							reject(new FetchError$1(`maximum redirect reached at: ${request.url}`, 'max-redirect'));
+							finalize();
+							return;
+						}
+
+						// HTTP-redirect fetch step 6 (counter increment)
+						// Create a new Request object.
+						const requestOpts = {
+							headers: new Headers$1(request.headers),
+							follow: request.follow,
+							counter: request.counter + 1,
+							agent: request.agent,
+							compress: request.compress,
+							method: request.method,
+							body: request.body,
+							signal: request.signal,
+							timeout: request.timeout
+						};
+
+						// HTTP-redirect fetch step 9
+						if (res.statusCode !== 303 && request.body && getTotalBytes$1(request) === null) {
+							reject(new FetchError$1('Cannot follow redirect with body being a readable stream', 'unsupported-redirect'));
+							finalize();
+							return;
+						}
+
+						// HTTP-redirect fetch step 11
+						if (res.statusCode === 303 || (res.statusCode === 301 || res.statusCode === 302) && request.method === 'POST') {
+							requestOpts.method = 'GET';
+							requestOpts.body = undefined;
+							requestOpts.headers.delete('content-length');
+						}
+
+						// HTTP-redirect fetch step 15
+						resolve(fetch$1(new Request$1(locationURL, requestOpts)));
+						finalize();
+						return;
+				}
+			}
+
+			// prepare response
+			res.once('end', function () {
+				if (signal) signal.removeEventListener('abort', abortAndFinalize);
+			});
+			let body = res.pipe(new PassThrough$1$1());
+
+			const response_options = {
+				url: request.url,
+				status: res.statusCode,
+				statusText: res.statusMessage,
+				headers: headers,
+				size: request.size,
+				timeout: request.timeout,
+				counter: request.counter
+			};
+
+			// HTTP-network fetch step 12.1.1.3
+			const codings = headers.get('Content-Encoding');
+
+			// HTTP-network fetch step 12.1.1.4: handle content codings
+
+			// in following scenarios we ignore compression support
+			// 1. compression support is disabled
+			// 2. HEAD request
+			// 3. no Content-Encoding header
+			// 4. no content response (204)
+			// 5. content not modified response (304)
+			if (!request.compress || request.method === 'HEAD' || codings === null || res.statusCode === 204 || res.statusCode === 304) {
+				response = new Response$1(body, response_options);
+				resolve(response);
+				return;
+			}
+
+			// For Node v6+
+			// Be less strict when decoding compressed responses, since sometimes
+			// servers send slightly invalid responses that are still accepted
+			// by common browsers.
+			// Always using Z_SYNC_FLUSH is what cURL does.
+			const zlibOptions = {
+				flush: zlib.Z_SYNC_FLUSH,
+				finishFlush: zlib.Z_SYNC_FLUSH
+			};
+
+			// for gzip
+			if (codings == 'gzip' || codings == 'x-gzip') {
+				body = body.pipe(zlib.createGunzip(zlibOptions));
+				response = new Response$1(body, response_options);
+				resolve(response);
+				return;
+			}
+
+			// for deflate
+			if (codings == 'deflate' || codings == 'x-deflate') {
+				// handle the infamous raw deflate response from old servers
+				// a hack for old IIS and Apache servers
+				const raw = res.pipe(new PassThrough$1$1());
+				raw.once('data', function (chunk) {
+					// see http://stackoverflow.com/questions/37519828
+					if ((chunk[0] & 0x0F) === 0x08) {
+						body = body.pipe(zlib.createInflate());
+					} else {
+						body = body.pipe(zlib.createInflateRaw());
+					}
+					response = new Response$1(body, response_options);
+					resolve(response);
+				});
+				return;
+			}
+
+			// for br
+			if (codings == 'br' && typeof zlib.createBrotliDecompress === 'function') {
+				body = body.pipe(zlib.createBrotliDecompress());
+				response = new Response$1(body, response_options);
+				resolve(response);
+				return;
+			}
+
+			// otherwise, use response as-is
+			response = new Response$1(body, response_options);
+			resolve(response);
+		});
+
+		writeToStream$1(req, request);
+	});
+}
+/**
+ * Redirect code matching
+ *
+ * @param   Number   code  Status code
+ * @return  Boolean
+ */
+fetch$1.isRedirect = function (code) {
+	return code === 301 || code === 302 || code === 303 || code === 307 || code === 308;
+};
+
+// expose Promise
+fetch$1.Promise = global.Promise;
+
+const q = faunadb.query;
+const client = new faunadb.Client({
+  secret: 'fnADvsSZphACAJMZtbFfkj4b83lYv_oQQGQRCyce',
+});
+
+const getData = () => {
+  fetch$1('https://am4-api.netlify.app/.netlify/functions/am4-alliance-api', {})
+    .then((res) => res.json())
+    .then(({ members }) => writeData(members));
+};
+
+const writeData = (team) => {
+  client
+    .query(
+      q.Replace(q.Ref(q.Collection('team'), '270057444654187008'), {
+        data: {
+          members: team,
+        },
+      })
+    )
+    .catch((err) => console.log(err));
+};
+
 const { PORT, NODE_ENV } = process.env;
 const dev = NODE_ENV === 'development';
 
 polka() // You can also use Express
-	.use(
-		compression({ threshold: 0 }),
-		sirv('static', { dev }),
-		middleware()
-	)
-	.listen(PORT, err => {
-		if (err) console.log('error', err);
-	});
+  .use(compression({ threshold: 0 }), sirv('static', { dev }), middleware())
+  .listen(PORT, (err) => {
+    if (err) console.log('error', err);
+  });
+
+setInterval(() => {
+  getData();
+}, 3000 * 60);
